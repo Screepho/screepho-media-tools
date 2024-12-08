@@ -1,0 +1,22 @@
+{
+  "name": "convert-youtube-backend",
+  "version": "1.1.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "convert-youtube-backend": "file:",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "ffmpeg-static": "^5.2.0",
+    "slugify": "^1.6.6",
+    "uuid": "^11.0.3"
+  }
+}
