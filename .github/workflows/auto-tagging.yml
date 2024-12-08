@@ -21,24 +21,25 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Determine Next Version
+      - name: Read Version from package.json
         id: version
         run: |
-          # Extract the latest tag
-          TAG=$(git tag --sort=-v:refname | head -n 1)
-          echo "Latest tag: $TAG"
+          # Extract the current version from package.json
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          echo "Current version from package.json: $CURRENT_VERSION"
 
-          # Default to v0.1.0 if no tags exist
-          if [ -z "$TAG" ]; then
-            NEXT_VERSION="v0.1.0"
+          # Verify if the tag already exists
+          if git rev-parse "v$CURRENT_VERSION" >/dev/null 2>&1; then
+            echo "Tag v$CURRENT_VERSION already exists."
+            echo "::set-output name=TAG_EXISTS::true"
           else
-            # Increment the patch version (vX.Y.Z -> vX.Y.(Z+1))
-            NEXT_VERSION=$(echo $TAG | awk -F. '{print $1"."$2"."$3+1}')
+            echo "Tag v$CURRENT_VERSION does not exist."
+            echo "::set-output name=NEXT_VERSION::v$CURRENT_VERSION"
+            echo "::set-output name=TAG_EXISTS::false"
           fi
-          echo "Next version: $NEXT_VERSION"
-          echo "::set-output name=NEXT_VERSION::$NEXT_VERSION"
 
       - name: Push Tag
+        if: steps.version.outputs.TAG_EXISTS == 'false'
         run: |
           git tag ${{ steps.version.outputs.NEXT_VERSION }}
           git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }} ${{ steps.version.outputs.NEXT_VERSION }}
