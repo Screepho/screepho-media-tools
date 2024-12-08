@@ -9,6 +9,9 @@ jobs:
   auto-tag:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write # Explicitly grant write permission to contents
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -39,5 +42,3 @@ jobs:
         run: |
           git tag ${{ steps.version.outputs.NEXT_VERSION }}
           git push origin ${{ steps.version.outputs.NEXT_VERSION }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
