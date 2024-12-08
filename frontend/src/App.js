@@ -115,7 +115,7 @@ function App() {
               <li className="nav-item">
                 <a
                   className="nav-link"
-                  href="https://github.com/MHF0"
+                  href="https://github.com/Screepho/screepho-media-tools"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

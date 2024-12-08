@@ -1,6 +1,6 @@
 {
   "name": "screepho-media-tools",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "🎥 Convert and download Instagram Reels and YouTube videos to MP3 or MP4 with ease! 🚀 Fast, ad-free, and user-friendly media converter built with React and Bootstrap.",
   "main": "index.js",
   "scripts": {
@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "screepho-media-tools": "file:"
+  }
 }
