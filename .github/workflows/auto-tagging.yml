@@ -21,22 +21,31 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Determine Next Version
-        id: version
-        run: |
-          # Extract the latest tag
-          TAG=$(git tag --sort=-v:refname | head -n 1)
-          echo "Latest tag: $TAG"
+          - name: Determine Next Version
+          id: version
+          run: |
+            # Check for latest git tag
+            TAG=$(git tag --sort=-v:refname | head -n 1)
 
-          # Default to v0.1.0 if no tags exist
-          if [ -z "$TAG" ]; then
-            NEXT_VERSION="v0.1.0"
-          else
-            # Increment the patch version (vX.Y.Z -> vX.Y.(Z+1))
-            NEXT_VERSION=$(echo $TAG | awk -F. '{print $1"."$2"."$3+1}')
-          fi
-          echo "Next version: $NEXT_VERSION"
-          echo "::set-output name=NEXT_VERSION::$NEXT_VERSION"
+            if [ -z "$TAG" ]; then
+              # Fallback to version.txt if no git tags exist
+              if [ -f version.txt ]; then
+                VERSION=$(cat version.txt)
+              else
+                VERSION="0.1.0"
+              fi
+              echo "Using version file: $VERSION"
+            else
+              VERSION=$TAG
+              echo "Using latest tag: $VERSION"
+            fi
+
+            # Increment the patch version
+            NEXT_VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
+            echo "Next version: $NEXT_VERSION"
+
+            # Save to GitHub Actions output
+            echo "::set-output name=NEXT_VERSION::$NEXT_VERSION"
 
       - name: Push Tag
         run: |
