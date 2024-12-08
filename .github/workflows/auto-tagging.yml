@@ -35,10 +35,9 @@ jobs:
           echo "Next version: $NEXT_VERSION"
           echo "::set-output name=NEXT_VERSION::$NEXT_VERSION"
 
-      - name: Create New Tag
+      - name: Create and Push New Tag
         run: |
           git tag ${{ steps.version.outputs.NEXT_VERSION }}
           git push origin ${{ steps.version.outputs.NEXT_VERSION }}
-
-      - name: Deploy or Build (Optional)
-        run: echo "Deployment process goes here"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
