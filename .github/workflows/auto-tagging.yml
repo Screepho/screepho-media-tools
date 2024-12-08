@@ -38,7 +38,7 @@ jobs:
           echo "Next version: $NEXT_VERSION"
           echo "::set-output name=NEXT_VERSION::$NEXT_VERSION"
 
-      - name: Create and Push New Tag
+      - name: Push Tag
         run: |
           git tag ${{ steps.version.outputs.NEXT_VERSION }}
-          git push origin ${{ steps.version.outputs.NEXT_VERSION }}
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }} ${{ steps.version.outputs.NEXT_VERSION }}
