@@ -3,7 +3,7 @@ name: Auto Tagging
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the main branch
+      - main # Trigger on pushes to the main branch
 
 jobs:
   auto-tag:
@@ -22,7 +22,7 @@ jobs:
         id: version
         run: |
           # Extract the latest tag
-          TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          TAG=$(git tag --sort=-v:refname | head -n 1)
           echo "Latest tag: $TAG"
 
           # Default to v0.1.0 if no tags exist
