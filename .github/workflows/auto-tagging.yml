@@ -3,7 +3,7 @@ name: Auto Tagging
 on:
   push:
     branches:
-      - main # Trigger on pushes to the main branch
+      - production # Trigger on pushes to the production branch
 
 jobs:
   auto-tag:
