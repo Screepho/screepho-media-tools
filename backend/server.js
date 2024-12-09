@@ -94,9 +94,9 @@ app.post("/convert", (req, res) => {
 // Download route
 app.get("/download/:fileName", (req, res) => {
   const { fileName } = req.params;
-  const filePath = path.join(TMP_DIR, fileName);
+  const filePath = path.resolve(TMP_DIR, fileName);
 
-  if (!fs.existsSync(filePath)) {
+  if (!filePath.startsWith(TMP_DIR) || !fs.existsSync(filePath)) {
     return res.status(404).json({ success: false, error: "File not found." });
   }
 
