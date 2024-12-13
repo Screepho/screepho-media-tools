@@ -4,6 +4,7 @@ const { exec } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
+const rateLimit = require("express-rate-limit");
 
 const app = express();
 app.use(cors());
@@ -16,8 +17,14 @@ if (!fs.existsSync(TMP_DIR)) {
 
 const PORT = process.env.PORT || 5000;
 
+// Rate limiter: maximum of 100 requests per 15 minutes
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+
 // Convert route
-app.post("/convert", (req, res) => {
+app.post("/convert", limiter, (req, res) => {
   const { url, format } = req.body;
 
   if (!url || !format) {
@@ -94,9 +101,9 @@ app.post("/convert", (req, res) => {
 // Download route
 app.get("/download/:fileName", (req, res) => {
   const { fileName } = req.params;
-  const filePath = path.join(TMP_DIR, fileName);
+  const filePath = path.resolve(TMP_DIR, fileName);
 
-  if (!fs.existsSync(filePath)) {
+  if (!filePath.startsWith(TMP_DIR) || !fs.existsSync(filePath)) {
     return res.status(404).json({ success: false, error: "File not found." });
   }
 

@@ -1,0 +1,42 @@
+# Dependabot configuration file
+# Automatically keeps your dependencies up-to-date
+version: 2
+updates:
+  # Frontend: Node.js dependencies
+  - package-ecosystem: "npm" # Manages Node.js dependencies
+    directory: "/frontend" # Path to the frontend directory
+    schedule:
+      interval: "weekly" # Check for updates weekly
+      day: "monday" # Run on Mondays
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "react"
+        versions: ["^18.0.0"] # Example: Ignore React updates for now
+
+  # Backend: Node.js dependencies
+  - package-ecosystem: "npm" # Manages Node.js dependencies
+    directory: "/backend" # Path to the backend directory
+    schedule:
+      interval: "weekly" # Check for updates weekly
+      day: "tuesday" # Run on Tuesdays
+    commit-message:
+      prefix: "chore(deps)"
+
+  # Backend: Python dependencies
+  - package-ecosystem: "pip" # Manages Python dependencies
+    directory: "/backend" # Path to the backend directory
+    schedule:
+      interval: "weekly" # Check for updates weekly
+      day: "wednesday" # Run on Wednesdays
+    commit-message:
+      prefix: "chore(deps)"
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions" # Updates GitHub Actions workflows
+    directory: "/" # Root directory for GitHub Actions
+    schedule:
+      interval: "weekly" # Check for updates weekly
+      day: "thursday" # Run on Thursdays
+    commit-message:
+      prefix: "chore(deps)"

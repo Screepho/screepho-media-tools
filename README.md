@@ -133,6 +133,7 @@
 1. Multi-language support for better accessibility.
 2. Enhanced analytics dashboard for tracking downloads and user behavior.
 3. Advanced settings for selecting custom resolutions and bitrates.
+4. Enable Dark and Light mode
 
 ---
 
